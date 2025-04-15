@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\BestTech_OntYA2025.props" />
+</Project>
