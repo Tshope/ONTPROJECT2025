@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\BestTech_OntYA2025.props" />
-</Project>
