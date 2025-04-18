@@ -49,7 +49,12 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
+                     
+                    </ul> 
+                     <!-- Right-aligned link -->                    
+                     <ul class="navbar-nav ms-auto">
+                         <li class="nav-item"><a class="nav-link" runat="server" href="~/PatientRegistration">Register</a></li>
+                     </ul>
                 </div>
             </div>
         </nav>
