@@ -340,6 +340,7 @@
     <Compile Include="Models\ObserverPatternModels\PushObserver.cs" />
     <Compile Include="Models\ObserverPatternModels\SmsObserver.cs" />
     <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\StrategyPatternModel\NotificationStrategy.cs" />
     <Compile Include="PatientRegistration.aspx.cs">
       <DependentUpon>PatientRegistration.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
