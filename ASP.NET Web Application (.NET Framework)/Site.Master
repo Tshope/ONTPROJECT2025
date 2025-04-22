@@ -13,8 +13,9 @@
     </asp:PlaceHolder>
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+    <link href="~/Content/style.css" rel="stylesheet" />
+ 
 </head>
 <body>
     <form runat="server">
@@ -37,27 +38,18 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">Application name</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                     <li class="nav-item"><a class="nav-link" runat="server" href="~/BookAppointment">Book Appointment</a></li>
-                    </ul> 
-                     <!-- Right-aligned link -->                    
-                     <ul class="navbar-nav ms-auto">
-                         <li class="nav-item"><a class="nav-link" runat="server" href="~/PatientRegistration">Register</a></li>
-                     </ul>
-                </div>
-            </div>
-        </nav>
+       <header>
+        <div class="container">
+            <h1>Healthcare Appointment Reminder</h1>
+            <nav>
+               <a class="tab-btn" runat="server" href="~/PatientRegistration.aspx">Patient Registration</a>
+
+                <a class="tab-btn" runat="server" href="~/BookAppointment.aspx">Appointment Creation</a>
+                <a class="tab-btn" >Send Notifications</a>
+                <a class="tab-btn" >Delivery Dashboard</a>
+            </nav>
+        </div>
+    </header>
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -69,6 +61,8 @@
     </form>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
-    </asp:PlaceHolder>
-</body>
+    </asp:PlaceHolder> 
+ 
+</body> 
+
 </html>
