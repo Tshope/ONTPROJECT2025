@@ -42,8 +42,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
         // Add appointment using model
         public bool AddAppointment(Appointment appointment)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 string query = @"INSERT INTO Appointment (PatientId, AppointmentDate, Reason, Doctor, Notify24h, Notify1h)
                  VALUES (@PatientId, @AppointmentDate, @Reason, @Doctor, @Notify24h, @Notify1h)";

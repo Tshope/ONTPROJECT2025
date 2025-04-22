@@ -38,6 +38,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                 ddlPatient.DataBind();
 
                 ddlPatient.Items.Insert(0, new ListItem("-- Select Patient --", ""));
+
             }
 
         }
@@ -74,12 +75,12 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             {
                 try
                 {
-                 
+
                     int patientId = int.Parse(ddlPatient.SelectedValue);
                     string reason = txtReason.Text.Trim();
                     string doctor = ddlDoctor.SelectedValue;
                     string time = ddlTime.SelectedValue;
-                   
+
 
                     // Validate required fields
                     if (string.IsNullOrEmpty(doctor))
@@ -161,6 +162,21 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             }
         }
 
+        protected void calendar_DayRender(object sender, DayRenderEventArgs e)
+        {
+            DateTime today = DateTime.Today;
+
+           
+            if (e.Day.Date < today || e.Day.Date.DayOfWeek == DayOfWeek.Saturday || e.Day.Date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                e.Day.IsSelectable = false;
+                e.Cell.ForeColor = System.Drawing.Color.Gray;
+                e.Cell.BackColor = System.Drawing.Color.LightGray;
+                e.Cell.Font.Strikeout = true;
+            }
+        }
+
+
         protected void BtnClear_Click(object sender, EventArgs e)
         {
             ClearForm();
@@ -168,22 +184,26 @@ namespace ASP.NET_Web_Application__.NET_Framework_
 
         private void ClearForm()
         {
-            // Clear all form fields
-            
+            // Clear text fields
             txtReason.Text = string.Empty;
-           
+
             // Reset dropdowns
             ddlDoctor.SelectedIndex = 0;
             ddlTime.SelectedIndex = 0;
+            ddlPatient.SelectedIndex = 0;
 
             // Reset calendar to tomorrow
             calendar.SelectedDate = DateTime.Today.AddDays(1);
 
-            // Reset checkboxes to defaults
+            // Reset checkboxes
             chkNotify24h.Checked = true;
             chkNotify1h.Checked = false;
 
+            // Clear messages
+            lblMessage.Text = string.Empty;
+            lblMessage.CssClass = string.Empty;
         }
+
 
         private void ShowSuccessMessage(string message)
         {

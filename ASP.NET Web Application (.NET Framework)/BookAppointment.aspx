@@ -15,23 +15,25 @@
 </div>
 
         
-        <div class="form-group">
-            <asp:Label runat="server" Text="Appointment Date: " AssociatedControlID="calendar" CssClass="control-label" />
-            <div class="calendar-container">
-                <asp:Calendar ID="calendar" runat="server" CssClass="calendar" BackColor="White" BorderColor="#999999"
-                    CellPadding="4" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt"
-                    ForeColor="Black" Height="180px" Width="100%">
-                    <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
-                    <NextPrevStyle VerticalAlign="Bottom" />
-                    <OtherMonthDayStyle ForeColor="#808080" />
-                    <SelectedDayStyle BackColor="#007bff" Font-Bold="True" ForeColor="White" />
-                    <SelectorStyle BackColor="#CCCCCC" />
-                    <TitleStyle BackColor="#999999" BorderColor="Black" Font-Bold="True" />
-                    <TodayDayStyle BackColor="#CCCCCC" />
-                    <WeekendDayStyle BackColor="#EFEFEF" />
-                </asp:Calendar>
-            </div>
-        </div>
+ <div class="form-group">
+    <asp:Label runat="server" Text="Appointment Date: " AssociatedControlID="calendar" CssClass="control-label" />
+    <div class="calendar-container">
+        <asp:Calendar ID="calendar" runat="server" CssClass="calendar" BackColor="White" BorderColor="#999999"
+            CellPadding="4" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt"
+            ForeColor="Black" Height="180px" Width="100%" 
+            OnDayRender="calendar_DayRender">
+            <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
+            <NextPrevStyle VerticalAlign="Bottom" />
+            <OtherMonthDayStyle ForeColor="#808080" />
+            <SelectedDayStyle BackColor="#007bff" Font-Bold="True" ForeColor="White" />
+            <SelectorStyle BackColor="#CCCCCC" />
+            <TitleStyle BackColor="#999999" BorderColor="Black" Font-Bold="True" />
+            <TodayDayStyle BackColor="#CCCCCC" />
+            <WeekendDayStyle BackColor="#EFEFEF" />
+        </asp:Calendar>
+    </div>
+</div>
+
         
         <div class="form-group">
             <asp:Label runat="server" Text="Preferred Time: " AssociatedControlID="ddlTime" CssClass="control-label" />
