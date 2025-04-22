@@ -96,6 +96,25 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             return customers;
         }
 
+        public bool IsSlotTaken(DateTime dateTime, string doctor)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                string query = @"SELECT COUNT(*) 
+                         FROM Appointment 
+                         WHERE AppointmentDate = @DateTime AND Doctor = @Doctor";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DateTime", dateTime);
+                cmd.Parameters.AddWithValue("@Doctor", doctor);
+
+                conn.Open();
+                int count = (int)cmd.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+
 
     }
 }

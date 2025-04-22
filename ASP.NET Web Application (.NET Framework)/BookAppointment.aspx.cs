@@ -117,6 +117,12 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                             return;
                         }
                     }
+                    // Check if the slot is taken
+                    if (AppointmentDAL.GetInstance().IsSlotTaken(appointmentDate, doctor))
+                    {
+                        ShowErrorMessage("This time slot is already booked for the selected doctor. Please choose another time.");
+                        return;
+                    }
 
                     // Get notification preferences
                     bool notify24h = chkNotify24h.Checked;
