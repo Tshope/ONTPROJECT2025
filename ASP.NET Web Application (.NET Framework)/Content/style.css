@@ -1,0 +1,111 @@
+﻿/* Global Styles */
+:root {
+    --primary: #4a89dc;
+    --primary-dark: #3a70c2;
+    --secondary: #3bafda;
+    --light: #f5f7fa;
+    --dark: #343a40;
+    --gray: #6c757d;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: #fff;
+    color: var(--dark);
+    line-height: 1.5;
+}
+
+ 
+header {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+    header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+ 
+    header h1 {
+        font-size: 18px;
+        color: var(--primary);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+ 
+nav {
+    display: flex;
+    gap: 16px;
+}
+
+    nav a {
+        color: var(--dark);
+        text-decoration: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+
+        nav a:hover {
+            color: var(--primary);
+            background-color: rgba(74, 137, 220, 0.1);
+        }
+
+        nav a.active {
+            color: white;
+            background-color: var(--primary);
+            font-weight: 600;
+        }
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+    header {
+        padding: 10px 0;
+    }
+
+        header .container {
+            padding: 0 16px;
+        }
+
+    nav {
+        gap: 8px;
+    }
+
+        nav a {
+            padding: 5px 8px;
+            font-size: 13px;
+        }
+}
+
+@media (max-width: 480px) {
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    nav {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
