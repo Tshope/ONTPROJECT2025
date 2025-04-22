@@ -324,6 +324,7 @@
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Data\AppointmentDAL.cs" />
+    <Compile Include="Data\NotificationDAL.cs" />
     <Compile Include="Data\NotificationDataAccess.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
