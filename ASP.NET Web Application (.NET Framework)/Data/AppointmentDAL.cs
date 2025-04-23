@@ -96,25 +96,116 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             return customers;
         }
 
-        public bool IsSlotTaken(DateTime dateTime, string doctor)
+
+        public List<AppointmentViewModel> GetUpcomingAppointments()
         {
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            var appointments = new List<AppointmentViewModel>();
+            using (var connection = new SqlConnection(connectionString))
             {
-                string query = @"SELECT COUNT(*) 
-                         FROM Appointment 
-                         WHERE AppointmentDate = @DateTime AND Doctor = @Doctor";
+                using (var command = new SqlCommand(@"
+    SELECT a.AppointmentId, p.Name AS PatientName, a.Doctor, 
+           a.AppointmentDate, a.Reason
+    FROM Appointment a
+    JOIN Patients p ON a.PatientId = p.PatientId
+    WHERE a.AppointmentDate >= @Today
+    ORDER BY a.AppointmentDate ASC", connection))
 
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@DateTime", dateTime);
-                cmd.Parameters.AddWithValue("@Doctor", doctor);
+                {
+                    command.Parameters.AddWithValue("@Today", DateTime.Today);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            DateTime appointmentDate = (DateTime)reader["AppointmentDate"];
+                            appointments.Add(new AppointmentViewModel
+                            {
+                                PatientName = reader["PatientName"].ToString(),
+                                Doctor = reader["Doctor"].ToString(),
+                                AppointmentDate = appointmentDate.Date,
+                                AppointmentTime = appointmentDate.ToString("h:mm tt"),
+                                Reason = reader["Reason"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            return appointments;
+        }
 
-                conn.Open();
-                int count = (int)cmd.ExecuteScalar();
+        public bool AreAllSlotsTakenForDate(DateTime date)
+        {
+            // Get count of all possible slots per day
+            const int totalSlotsPerDay = 7; // Based on your dropdown (7 time slots)
+            const int totalDoctors = 5; // Based on your code (5 doctors)
+            int maxPossibleAppointments = totalSlotsPerDay * totalDoctors;
 
-                return count > 0;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand(@"
+                    SELECT COUNT(*) FROM Appointment 
+                    WHERE CONVERT(date, AppointmentDate) = @Date", connection))
+                {
+                    command.Parameters.AddWithValue("@Date", date.Date);
+                    connection.Open();
+                    int bookedAppointments = (int)command.ExecuteScalar();
+
+                    // If all slots are taken, return true
+                    return bookedAppointments >= maxPossibleAppointments;
+                }
             }
         }
 
+        public List<string> GetAvailableTimeSlotsForDate(DateTime date, string doctor)
+        {
+            // Define all possible time slots based on your dropdown
+            List<string> allTimeSlots = new List<string> { "9:00 AM", "10:00 AM", "11:00 AM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM" };
+            List<string> bookedTimes = new List<string>();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand(@"
+                    SELECT CONVERT(varchar(15), AppointmentDate, 100) as BookedTime
+                    FROM Appointment 
+                    WHERE CONVERT(date, AppointmentDate) = @Date AND Doctor = @Doctor", connection))
+                {
+                    command.Parameters.AddWithValue("@Date", date.Date);
+                    command.Parameters.AddWithValue("@Doctor", doctor);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string timeStr = reader["BookedTime"].ToString();
+                            // Extract time part only (format: "MMM DD YYYY HH:MM(AM/PM)")
+                            timeStr = timeStr.Substring(timeStr.IndexOf(' ', 7) + 1);
+                            bookedTimes.Add(timeStr);
+                        }
+                    }
+                }
+            }
+
+            // Return available time slots by removing booked ones
+            return allTimeSlots.Except(bookedTimes).ToList();
+        }
+
+        public bool IsSlotTaken(DateTime appointmentDateTime, string doctor)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand(@"
+                    SELECT COUNT(*) FROM Appointment
+                    WHERE Doctor = @Doctor 
+                    AND CONVERT(smalldatetime, AppointmentDate) = CONVERT(smalldatetime, @AppointmentDate)", connection))
+                {
+                    command.Parameters.AddWithValue("@Doctor", doctor);
+                    command.Parameters.AddWithValue("@AppointmentDate", appointmentDateTime);
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
 
     }
 }

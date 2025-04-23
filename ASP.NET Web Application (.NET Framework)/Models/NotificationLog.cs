@@ -27,5 +27,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models
         {
             CreatedAt = DateTime.UtcNow;
         }
+
+        public int? PatientId { get; set; }
     }
 }

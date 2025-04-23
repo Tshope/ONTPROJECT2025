@@ -338,6 +338,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Appointment\Appointment.cs" />
+    <Compile Include="Models\Appointment\AppointmentViewModel.cs" />
     <Compile Include="Models\NotificationLog.cs" />
     <Compile Include="Models\ObserverPatternModels\EmailObserver.cs" />
     <Compile Include="Models\ObserverPatternModels\IObserver.cs" />

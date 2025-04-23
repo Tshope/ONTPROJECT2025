@@ -23,15 +23,16 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                 PopulateDoctors();
 
                 // Set calendar to not allow past dates
-                calendar.DayRender += Calendar_DayRender;
+                calendar.DayRender += calendar_DayRender;
 
                 // Set default date to tomorrow
                 calendar.SelectedDate = DateTime.Today.AddDays(1);
 
                 // Clear any previous messages
-                lblMessage.Text = string.Empty;
+                pnlSuccess.Visible = false;
+                pnlError.Visible = false;
 
-                // ✅ Load patients from DAL
+                // Load patients from DAL
                 ddlPatient.DataSource = AppointmentDAL.GetInstance().GetCustomersWithoutAppointments();
                 ddlPatient.DataTextField = "Name";
                 ddlPatient.DataValueField = "PatientId";
@@ -39,8 +40,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_
 
                 ddlPatient.Items.Insert(0, new ListItem("-- Select Patient --", ""));
 
+                // Load upcoming appointments
+                LoadUpcomingAppointments();
             }
-
         }
 
         private void PopulateDoctors()
@@ -57,30 +59,55 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             ddlDoctor.Items.Add(new ListItem("Dr. Taylor", "Taylor"));
         }
 
-        protected void Calendar_DayRender(object sender, DayRenderEventArgs e)
+        protected void calendar_DayRender(object sender, DayRenderEventArgs e)
         {
-            // Disable past dates
-            if (e.Day.Date < DateTime.Today)
+            DateTime today = DateTime.Today;
+
+            // Disable past dates, weekends, and holidays
+            if (e.Day.Date < today ||
+                e.Day.Date.DayOfWeek == DayOfWeek.Saturday ||
+                e.Day.Date.DayOfWeek == DayOfWeek.Sunday)
             {
                 e.Day.IsSelectable = false;
                 e.Cell.ForeColor = System.Drawing.Color.Gray;
                 e.Cell.BackColor = System.Drawing.Color.LightGray;
+                e.Cell.Font.Strikeout = true;
             }
 
+            // Highlight dates with no available slots
+            if (e.Day.Date >= today)
+            {
+                // Check if all slots for this day are taken
+                bool allSlotsTaken = AppointmentDAL.GetInstance().AreAllSlotsTakenForDate(e.Day.Date);
+                if (allSlotsTaken)
+                {
+                    e.Cell.BackColor = System.Drawing.Color.LightPink;
+                    e.Cell.ToolTip = "All appointments taken for this day";
+                }
+            }
         }
 
         protected void BtnSubmit_Click(object sender, EventArgs e)
         {
+            // Clear any previous messages
+            pnlSuccess.Visible = false;
+            pnlError.Visible = false;
+
             if (Page.IsValid)
             {
                 try
                 {
+                    // Validate required fields
+                    if (string.IsNullOrEmpty(ddlPatient.SelectedValue))
+                    {
+                        ShowErrorMessage("Please select a patient");
+                        return;
+                    }
 
                     int patientId = int.Parse(ddlPatient.SelectedValue);
                     string reason = txtReason.Text.Trim();
                     string doctor = ddlDoctor.SelectedValue;
                     string time = ddlTime.SelectedValue;
-
 
                     // Validate required fields
                     if (string.IsNullOrEmpty(doctor))
@@ -117,10 +144,20 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                             return;
                         }
                     }
-                    // Check if the slot is taken
+
+                    // Check if the slot is taken (enhanced validation)
                     if (AppointmentDAL.GetInstance().IsSlotTaken(appointmentDate, doctor))
                     {
-                        ShowErrorMessage("This time slot is already booked for the selected doctor. Please choose another time.");
+                        // Highlight available slots
+                        List<string> availableTimes = AppointmentDAL.GetInstance().GetAvailableTimeSlotsForDate(calendar.SelectedDate, doctor);
+                        if (availableTimes.Count > 0)
+                        {
+                            ShowErrorMessage($"This time slot is already booked. Available times for {doctor} on {calendar.SelectedDate.ToShortDateString()} are: {string.Join(", ", availableTimes)}");
+                        }
+                        else
+                        {
+                            ShowErrorMessage($"No available slots for {doctor} on {calendar.SelectedDate.ToShortDateString()}. Please select another date or doctor.");
+                        }
                         return;
                     }
 
@@ -131,7 +168,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                     // Create appointment object
                     Appointment appointment = new Appointment
                     {
-                        PatientId = int.Parse(ddlPatient.SelectedValue),
+                        PatientId = patientId,
                         AppointmentDate = appointmentDate,
                         Reason = reason,
                         Doctor = doctor,
@@ -146,6 +183,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                     {
                         // Show success message
                         ShowSuccessMessage($"Your appointment has been successfully booked with {ddlDoctor.SelectedItem.Text} on {appointmentDate.ToString("MMM dd, yyyy")} at {appointmentDate.ToString("h:mm tt")}.");
+
+                        // Refresh the appointments grid
+                        LoadUpcomingAppointments();
 
                         // Clear the form
                         ClearForm();
@@ -167,21 +207,6 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                 }
             }
         }
-
-        protected void calendar_DayRender(object sender, DayRenderEventArgs e)
-        {
-            DateTime today = DateTime.Today;
-
-           
-            if (e.Day.Date < today || e.Day.Date.DayOfWeek == DayOfWeek.Saturday || e.Day.Date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                e.Day.IsSelectable = false;
-                e.Cell.ForeColor = System.Drawing.Color.Gray;
-                e.Cell.BackColor = System.Drawing.Color.LightGray;
-                e.Cell.Font.Strikeout = true;
-            }
-        }
-
 
         protected void BtnClear_Click(object sender, EventArgs e)
         {
@@ -206,23 +231,32 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             chkNotify1h.Checked = false;
 
             // Clear messages
-            lblMessage.Text = string.Empty;
-            lblMessage.CssClass = string.Empty;
+            pnlSuccess.Visible = false;
+            pnlError.Visible = false;
         }
-
 
         private void ShowSuccessMessage(string message)
         {
-            lblMessage.Text = message;
-            lblMessage.ForeColor = System.Drawing.Color.Green;
-            lblMessage.CssClass = "appointment-message appointment-success";
+            litSuccess.Text = message;
+            pnlSuccess.Visible = true;
+            pnlError.Visible = false;
         }
 
         private void ShowErrorMessage(string message)
         {
-            lblMessage.Text = message;
-            lblMessage.ForeColor = System.Drawing.Color.Red;
-            lblMessage.CssClass = "appointment-message appointment-error";
+            litError.Text = message;
+            pnlError.Visible = true;
+            pnlSuccess.Visible = false;
         }
+
+        private void LoadUpcomingAppointments()
+        {
+            // Get appointments from today onwards
+            var appointments = AppointmentDAL.GetInstance().GetUpcomingAppointments();
+            gvAppointments.DataSource = appointments;
+            gvAppointments.DataBind();
+        }
+
+
     }
 }
