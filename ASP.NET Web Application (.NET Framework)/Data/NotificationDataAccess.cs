@@ -59,6 +59,62 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                     }
                 }
             }
+        // reading patients from the table 
+        public List<Patient> GetAllPatients()
+        {
+            var patients = new List<Patient>();
+
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            {
+                string query = "SELECT * FROM Patients"; // Ensure table name matches
+                SqlCommand cmd = new SqlCommand(query, conn);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    patients.Add(new Patient
+                    {
+                        Name = reader["Name"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        PhoneNumber = reader["PhoneNumber"].ToString(),
+                        EmailNotificationEnabled = Convert.ToBoolean(reader["EmailNotificationEnabled"]),
+                        SmsNotificationEnabled = Convert.ToBoolean(reader["SmsNotificationEnabled"]),
+                        PushNotificationEnabled = Convert.ToBoolean(reader["PushNotificationEnabled"])
+                    });
+                }
+            }
+
+            return patients;
         }
+        // managing the patients subscriptions using update and delete 
+        public void UpdatePatientSubscription(string email, bool emailSub, bool smsSub, bool pushSub)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                string sql = "UPDATE Patients SET EmailNotificationEnabled = @Email, SmsNotificationEnabled = @Sms, PushNotificationEnabled = @Push WHERE Email = @EmailAddress";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Email", emailSub);
+                cmd.Parameters.AddWithValue("@Sms", smsSub);
+                cmd.Parameters.AddWithValue("@Push", pushSub);
+                cmd.Parameters.AddWithValue("@EmailAddress", email);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeletePatient(string email)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                string sql = "DELETE FROM Patients WHERE Email = @EmailAddress";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@EmailAddress", email);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
     }
+}
  

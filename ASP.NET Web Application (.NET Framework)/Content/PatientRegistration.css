@@ -1,0 +1,85 @@
+﻿/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+}
+
+main {
+    padding: 20px;
+}
+
+/* Form Container */
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+/* Button */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+/* Alert Panels */
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+}
+
+/* Grid Table */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: collapse;
+}
+
+    .table th, .table td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-bordered {
+    border: 1px solid #ddd;
+}
+
+/* Custom Layout and Media Queries */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align:start;
+}

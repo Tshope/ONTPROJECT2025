@@ -26,6 +26,13 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.ObserverPatternModels
                     observer.Update(message);
                 }
             }
+        public void ClearObservers()  // additional methd to prevent duplicates 
+        {
+            _observers.Clear();
         }
+
     }
+  
+
+}
  
