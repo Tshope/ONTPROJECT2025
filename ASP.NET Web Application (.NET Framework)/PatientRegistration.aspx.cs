@@ -17,10 +17,15 @@ namespace ASP.NET_Web_Application__.NET_Framework_
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Always initialize your fields
             _notificationSubject = new NotificationSubject();
             _dataAccess = new NotificationDataAccess();
-        }
 
+            if (!IsPostBack)
+            {
+                LoadPatients();
+            }
+        }
         protected void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -38,31 +43,27 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                     PushNotificationEnabled = chkPush.Checked
                 };
 
-                // Set up observers based on preferences
-                if (patient.EmailNotificationEnabled)
-                {
-                    _notificationSubject.Attach(new EmailObserver(patient.Email));
-                }
-                if (patient.SmsNotificationEnabled)
-                {
-                    _notificationSubject.Attach(new SmsObserver(patient.PhoneNumber));
-                }
-                if (patient.PushNotificationEnabled)
-                {
-                    _notificationSubject.Attach(new PushObserver());
-                }
-
-                // Save to database
+                // Save to database first
                 _dataAccess.SavePatient(patient);
 
-                // Notify observers
-                _notificationSubject.Notify($"New patient registered: {patient.Name}");
+                // Create a fresh NotificationSubject for this patient's preferences
+                var subject = new NotificationSubject();
 
-                // Show success message
+                if (patient.EmailNotificationEnabled)
+                    subject.Attach(new EmailObserver(patient.Email));
+
+                if (patient.SmsNotificationEnabled)
+                    subject.Attach(new SmsObserver(patient.PhoneNumber));
+
+                if (patient.PushNotificationEnabled)
+                    subject.Attach(new PushObserver());
+
+                subject.Notify($"New patient registered: {patient.Name}");
+
                 pnlSuccess.Visible = true;
-                litSuccess.Text = "Patient registered successfully!"; 
+                litSuccess.Text = "Patient registered successfully!";
 
-                ClearForm(); // calling the method to clear the form controlls
+                ClearForm(); // clear form
             }
             catch (Exception ex)
             {
@@ -70,9 +71,10 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                 litError.Text = "Error registering patient: " + ex.Message;
             }
 
-            // a method to clear controlls after submission
             chkPush.Checked = false;
+            LoadPatients(); // Refresh GridView
         }
+
         // a method to clear controlls after submission
         private void ClearForm()
         {
@@ -83,5 +85,61 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             chkSms.Checked = false;
             chkPush.Checked = false;
         }
+      
+        // method to load patients 
+        private void LoadPatients()
+        {
+            try
+            {
+                var patients = _dataAccess.GetAllPatients(); // Get all patients from the database
+                gvPatients.DataSource = patients;
+                gvPatients.DataBind();
+            }
+            catch (Exception ex)
+            {
+                pnlError.Visible = true;
+                litError.Text = "Error loading patients: " + ex.Message;
+            }
+        }
+        //  
+        protected void gvPatients_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvPatients.EditIndex = e.NewEditIndex;
+            LoadPatients();
+        }
+
+        protected void gvPatients_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvPatients.EditIndex = -1;
+            LoadPatients();
+        }
+
+        protected void gvPatients_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            string email = gvPatients.DataKeys[e.RowIndex].Value.ToString();
+
+            GridViewRow row = gvPatients.Rows[e.RowIndex];
+            bool emailSub = ((CheckBox)row.Cells[3].Controls[0]).Checked;
+            bool smsSub = ((CheckBox)row.Cells[4].Controls[0]).Checked;
+            bool pushSub = ((CheckBox)row.Cells[5].Controls[0]).Checked;
+
+            // Update in DB
+            _dataAccess.UpdatePatientSubscription(email, emailSub, smsSub, pushSub);
+
+            gvPatients.EditIndex = -1;
+            LoadPatients();
+        }
+
+        protected void gvPatients_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            string email = gvPatients.DataKeys[e.RowIndex].Value.ToString();
+            _dataAccess.DeletePatient(email);
+
+            LoadPatients();
+        }
+      
+
+
+
     }
 } 

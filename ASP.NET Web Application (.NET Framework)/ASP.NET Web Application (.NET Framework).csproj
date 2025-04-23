@@ -231,6 +231,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\default.css" />
     <Content Include="Content\Images\img1.svg" />
+    <Content Include="Content\PatientRegistration.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
