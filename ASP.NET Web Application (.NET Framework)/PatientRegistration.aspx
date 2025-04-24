@@ -73,7 +73,7 @@
                     <asp:CheckBoxField DataField="SmsNotificationEnabled" HeaderText="SMS Sub" />
                     <asp:CheckBoxField DataField="PushNotificationEnabled" HeaderText="Push Sub" />
                     <asp:CommandField ShowEditButton="True" ShowDeleteButton="True"  HeaderText="Manage" />         
-                    <!-- Has appoitement table -->        
+                   
                                                          
                 </Columns>
             </asp:GridView>
