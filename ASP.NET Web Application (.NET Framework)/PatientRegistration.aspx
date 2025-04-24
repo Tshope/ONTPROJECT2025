@@ -72,9 +72,36 @@
                     <asp:CheckBoxField DataField="EmailNotificationEnabled" HeaderText="Email Sub" />
                     <asp:CheckBoxField DataField="SmsNotificationEnabled" HeaderText="SMS Sub" />
                     <asp:CheckBoxField DataField="PushNotificationEnabled" HeaderText="Push Sub" />
-                    <asp:CommandField ShowEditButton="True" ShowDeleteButton="True" />
+                    <asp:CommandField ShowEditButton="True" ShowDeleteButton="True"  HeaderText="Manage" />         
+                    <!-- Has appoitement table -->        
+                                                         
                 </Columns>
             </asp:GridView>
         </div>
-    </main>
-</asp:Content>
+    </main> 
+ <script type="text/javascript">
+     function autoHideMessages() {
+         // Hide success message after 2 seconds if visible
+         var successPanel = document.getElementById('<%= pnlSuccess.ClientID %>');
+        if (successPanel && successPanel.style.display !== 'none') {
+            setTimeout(function () {
+                successPanel.style.display = 'none';
+            }, 2000);
+        }
+
+        // Hide error message after 2 seconds if visible
+        var errorPanel = document.getElementById('<%= pnlError.ClientID %>');
+         if (errorPanel && errorPanel.style.display !== 'none') {
+             setTimeout(function () {
+                 errorPanel.style.display = 'none';
+             }, 2000);
+         }
+     }
+
+     // Run on page load and after every postback
+     window.onload = autoHideMessages;
+     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(autoHideMessages);
+ </script>
+</asp:Content> 
+
+

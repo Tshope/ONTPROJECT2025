@@ -40,34 +40,51 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
 
         public int SavePatient(Patient patient)
         {
-            int newPatientId;
-
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand(
-                    @"INSERT INTO Patients (Name, Email, PhoneNumber, EmailNotificationEnabled, 
-            SmsNotificationEnabled, PushNotificationEnabled, CreatedAt, UpdatedAt) 
-            VALUES (@Name, @Email, @PhoneNumber, @EmailNotificationEnabled, 
-            @SmsNotificationEnabled, @PushNotificationEnabled, @CreatedAt, @UpdatedAt);
-            SELECT SCOPE_IDENTITY();", connection))
+                conn.Open();
+
+                //Check if patient exists
+                  string checkSql = @"
+                  SELECT COUNT(*) 
+                  FROM Patients 
+                  WHERE Email = @Email AND PhoneNumber = @PhoneNumber";
+
+                SqlCommand checkCmd = new SqlCommand(checkSql, conn);
+                checkCmd.Parameters.AddWithValue("@Email", patient.Email);
+                checkCmd.Parameters.AddWithValue("@PhoneNumber", patient.PhoneNumber);
+
+                int count = (int)checkCmd.ExecuteScalar();
+
+                if (count > 0)
                 {
-                    command.Parameters.AddWithValue("@Name", patient.Name);
-                    command.Parameters.AddWithValue("@Email", patient.Email);
-                    command.Parameters.AddWithValue("@PhoneNumber", patient.PhoneNumber);
-                    command.Parameters.AddWithValue("@EmailNotificationEnabled", patient.EmailNotificationEnabled);
-                    command.Parameters.AddWithValue("@SmsNotificationEnabled", patient.SmsNotificationEnabled);
-                    command.Parameters.AddWithValue("@PushNotificationEnabled", patient.PushNotificationEnabled);
-                    command.Parameters.AddWithValue("@CreatedAt", patient.CreatedAt);
-                    command.Parameters.AddWithValue("@UpdatedAt", patient.UpdatedAt);
-
-                    connection.Open();
-                    newPatientId = Convert.ToInt32(command.ExecuteScalar());
+                   
+                    return -1;
                 }
-            }
 
-            return newPatientId;
+                //Insert new patient
+                string insertSql = @"
+            INSERT INTO Patients 
+            (Name, Email, PhoneNumber, EmailNotificationEnabled, SmsNotificationEnabled, PushNotificationEnabled, CreatedAt, UpdatedAt)
+            OUTPUT INSERTED.PatientId
+            VALUES 
+            (@Name, @Email, @PhoneNumber, @EmailNotificationEnabled, @SmsNotificationEnabled, @PushNotificationEnabled, @CreatedAt, @UpdatedAt)";
+
+                SqlCommand insertCmd = new SqlCommand(insertSql, conn);
+                insertCmd.Parameters.AddWithValue("@Name", patient.Name);
+                insertCmd.Parameters.AddWithValue("@Email", patient.Email);
+                insertCmd.Parameters.AddWithValue("@PhoneNumber", patient.PhoneNumber);
+                insertCmd.Parameters.AddWithValue("@EmailNotificationEnabled", patient.EmailNotificationEnabled);
+                insertCmd.Parameters.AddWithValue("@SmsNotificationEnabled", patient.SmsNotificationEnabled);
+                insertCmd.Parameters.AddWithValue("@PushNotificationEnabled", patient.PushNotificationEnabled);
+                insertCmd.Parameters.AddWithValue("@CreatedAt", patient.CreatedAt);
+                insertCmd.Parameters.AddWithValue("@UpdatedAt", patient.UpdatedAt);
+
+                int newId = (int)insertCmd.ExecuteScalar();
+                patient.PatientId = newId;
+                return newId;
+            }
         }
-   
         // reading patients from the table 
         public List<Patient> GetAllPatients()
         {
@@ -115,14 +132,42 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string sql = "DELETE FROM Patients WHERE Email = @EmailAddress";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@EmailAddress", email);
                 conn.Open();
-                cmd.ExecuteNonQuery();
-            }
-        }
 
+                // Start a transaction to ensure both deletions succeed together
+                SqlTransaction transaction = conn.BeginTransaction();
+
+                try
+                {
+                    // Get the PatientId based on email
+                    string getIdSql = "SELECT PatientId FROM Patients WHERE Email = @EmailAddress";
+                    SqlCommand getIdCmd = new SqlCommand(getIdSql, conn, transaction);
+                    getIdCmd.Parameters.AddWithValue("@EmailAddress", email);
+                    var patientId = getIdCmd.ExecuteScalar();
+
+                    if (patientId != null)
+                    {
+                        // Delete related logs
+                        string deleteLogsSql = "DELETE FROM NotificationLogs WHERE PatientId = @PatientId";
+                        SqlCommand deleteLogsCmd = new SqlCommand(deleteLogsSql, conn, transaction);
+                        deleteLogsCmd.Parameters.AddWithValue("@PatientId", (int)patientId);
+                        deleteLogsCmd.ExecuteNonQuery();
+                    }
+                    // Delete the patient
+                    string deletePatientSql = "DELETE FROM Patients WHERE Email = @EmailAddress";
+                    SqlCommand deletePatientCmd = new SqlCommand(deletePatientSql, conn, transaction);
+                    deletePatientCmd.Parameters.AddWithValue("@EmailAddress", email);
+                    deletePatientCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+      }
 
     }
 }

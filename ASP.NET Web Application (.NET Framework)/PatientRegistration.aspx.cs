@@ -9,11 +9,14 @@ using ASP.NET_Web_Application__.NET_Framework_.Models;
 using ASP.NET_Web_Application__.NET_Framework_.Models.ObserverPatternModels;
 
 namespace ASP.NET_Web_Application__.NET_Framework_
-{
+{ 
+
     public partial class PatientRegistration : System.Web.UI.Page
     {
+
         private NotificationSubject _notificationSubject; // This is the subject that will notify observers
         private NotificationDataAccess _dataAccess; // Data access object for saving notifications 
+        private readonly int _patientId;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,6 +31,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_
         }
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            pnlSuccess.Visible = false;
+            pnlError.Visible = false;
+
             try
             {
                 if (!Page.IsValid)
@@ -40,30 +46,41 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                     PhoneNumber = txtPhone.Text.Trim(),
                     EmailNotificationEnabled = chkEmail.Checked,
                     SmsNotificationEnabled = chkSms.Checked,
-                    PushNotificationEnabled = chkPush.Checked
+                    PushNotificationEnabled = chkPush.Checked,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
                 };
 
-                // Save to database first
-                _dataAccess.SavePatient(patient);
+                int patientId = _dataAccess.SavePatient(patient);
 
-                // Create a fresh NotificationSubject for this patient's preferences
-                var subject = new NotificationSubject();
+                if (patientId == -1)
+                {
+                    // Duplicate found
+                    pnlError.Visible = true;
+                    litError.Text = "A patient with this email and phone number already exists.";
+
+                    ClearForm();
+                    return; 
+                }
+
+                patient.PatientId = patientId;
+
+                _notificationSubject = new NotificationSubject();
 
                 if (patient.EmailNotificationEnabled)
-                    subject.Attach(new EmailObserver(patient.Email));
+                    _notificationSubject.Attach(new EmailObserver(patient.Email, patient.PatientId));
 
                 if (patient.SmsNotificationEnabled)
-                    subject.Attach(new SmsObserver(patient.PhoneNumber));
+                    _notificationSubject.Attach(new SmsObserver(patient.PhoneNumber, patient.PatientId));
 
                 if (patient.PushNotificationEnabled)
-                    subject.Attach(new PushObserver());
+                    _notificationSubject.Attach(new PushObserver(patient.PatientId));
 
-                subject.Notify($"New patient registered: {patient.Name}");
+                _notificationSubject.Notify($"New patient registered: {patient.Name}");
 
                 pnlSuccess.Visible = true;
                 litSuccess.Text = "Patient registered successfully!";
-
-                ClearForm(); // clear form
+                ClearForm();
             }
             catch (Exception ex)
             {
@@ -72,9 +89,8 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             }
 
             chkPush.Checked = false;
-            LoadPatients(); // Refresh GridView
+            LoadPatients(); // Refresh
         }
-
         // a method to clear controlls after submission
         private void ClearForm()
         {
@@ -132,14 +148,25 @@ namespace ASP.NET_Web_Application__.NET_Framework_
 
         protected void gvPatients_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            string email = gvPatients.DataKeys[e.RowIndex].Value.ToString();
-            _dataAccess.DeletePatient(email);
+            pnlSuccess.Visible = false;
+            pnlError.Visible = false; 
+            
+            try
+            {
+                string email = gvPatients.DataKeys[e.RowIndex].Value.ToString();
+                _dataAccess.DeletePatient(email);
 
-            LoadPatients();
-        }
-      
+                pnlSuccess.Visible = true;
+                litSuccess.Text = "Patient removed successfully!";
+                LoadPatients();
+            }
+            catch (Exception ex)
+            {
+                pnlError.Visible = true;
+                litError.Text = "Error deleting patient: " + ex.Message;
+            }
 
-
+        } 
 
     }
 } 
