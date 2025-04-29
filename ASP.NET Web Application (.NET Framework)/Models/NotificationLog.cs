@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASP.NET_Web_Application__.NET_Framework_.Models
 {
     public class NotificationLog
     {
+        [Key]
         public int NotificationLogId { get; set; }
 
         [Required]
@@ -28,6 +27,11 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models
             CreatedAt = DateTime.UtcNow;
         }
 
+        // This is the foreign key
         public int? PatientId { get; set; }
+
+        // This is the navigation property (optional but highly recommended)
+        [ForeignKey("PatientId")]
+        public virtual Patient Patient { get; set; }
     }
 }

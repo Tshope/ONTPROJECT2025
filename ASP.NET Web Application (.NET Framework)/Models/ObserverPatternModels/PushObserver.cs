@@ -9,10 +9,12 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.ObserverPatternModels
     public class PushObserver :IObserver
     {
         private readonly NotificationDataAccess _dataAccess;
+        private readonly int _patientId;
 
-        public PushObserver()
+        public PushObserver(int patientId)
         {
             _dataAccess = new NotificationDataAccess();
+            _patientId = patientId;
         }
 
         public void Update(string message)
@@ -23,7 +25,8 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.ObserverPatternModels
                 {
                     Recipient = "Push Notification",  // Generic recipient for push notifications
                     NotificationType = "Push",
-                    Message = message
+                    Message = message,
+                    PatientId = _patientId // Correctly using passed-in PatientId
                 };
 
                 _dataAccess.SaveNotificationLog(notificationLog);
