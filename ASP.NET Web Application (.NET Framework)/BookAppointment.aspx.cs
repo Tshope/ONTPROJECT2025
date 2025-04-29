@@ -178,12 +178,11 @@ namespace ASP.NET_Web_Application__.NET_Framework_
 
                     // Save appointment to database
                     bool success = AppointmentDAL.GetInstance().AddAppointment(appointment);
-
+                    // Show success message
+                    ShowSuccessMessage($"Your appointment has been successfully booked with {ddlDoctor.SelectedItem.Text} on {appointmentDate.ToString("MMM dd, yyyy")} at {appointmentDate.ToString("h:mm tt")}.");
                     if (success)
                     {
-                        // Show success message
-                        ShowSuccessMessage($"Your appointment has been successfully booked with {ddlDoctor.SelectedItem.Text} on {appointmentDate.ToString("MMM dd, yyyy")} at {appointmentDate.ToString("h:mm tt")}.");
-
+                        
                         // Refresh the appointments grid
                         LoadUpcomingAppointments();
 

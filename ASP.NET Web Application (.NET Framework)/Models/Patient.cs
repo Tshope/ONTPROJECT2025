@@ -30,6 +30,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models
         public bool SmsNotificationEnabled { get; set; }
         public bool PushNotificationEnabled { get; set; }
 
+        // added property 
+        public string HasAppointment { get; set; } // yes or no
+
         // Timestamps
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
@@ -38,9 +41,6 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models
         {
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
-            EmailNotificationEnabled = false;
-            SmsNotificationEnabled = false;
-            PushNotificationEnabled = false;
         }
     }
 }

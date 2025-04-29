@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PatientRegistration.aspx.cs" Inherits="ASP.NET_Web_Application__.NET_Framework_.PatientRegistration" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"  Async="true" CodeBehind="PatientRegistration.aspx.cs" Inherits="ASP.NET_Web_Application__.NET_Framework_.PatientRegistration" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <main aria-labelledby="title">
@@ -72,9 +72,9 @@
                     <asp:CheckBoxField DataField="EmailNotificationEnabled" HeaderText="Email Sub" />
                     <asp:CheckBoxField DataField="SmsNotificationEnabled" HeaderText="SMS Sub" />
                     <asp:CheckBoxField DataField="PushNotificationEnabled" HeaderText="Push Sub" />
+                     <asp:BoundField DataField="HasAppointment" HeaderText="Has Appointment?" ReadOnly="True" />    
                     <asp:CommandField ShowEditButton="True" ShowDeleteButton="True"  HeaderText="Manage" />         
-                   
-                                                         
+                                                                                   
                 </Columns>
             </asp:GridView>
         </div>

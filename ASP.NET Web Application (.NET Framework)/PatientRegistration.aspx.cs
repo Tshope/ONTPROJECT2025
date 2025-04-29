@@ -104,9 +104,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_
       
         // method to load patients 
         private void LoadPatients()
-        {
+         {
             try
-            {
+           {
                 var patients = _dataAccess.GetAllPatients(); // Get all patients from the database
                 gvPatients.DataSource = patients;
                 gvPatients.DataBind();
@@ -117,7 +117,22 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                 litError.Text = "Error loading patients: " + ex.Message;
             }
         }
-        //  
+
+        //private void LoadPatientsHasAppoitments()
+        //{
+        //    try
+        //    {
+        //        var patientsWithAppointment = _dataAccess.GetAllPatientsHasAppointment();
+        //        gvPatients.DataSource = patientsWithAppointment;
+        //        gvPatients.DataBind();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        pnlError.Visible = true;
+        //        litError.Text = "Error loading patients: " + ex.Message;
+        //    }
+        //}
+
         protected void gvPatients_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvPatients.EditIndex = e.NewEditIndex;

@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using ASP.NET_Web_Application__.NET_Framework_.Models;
+using ASP.NET_Web_Application__.NET_Framework_.Models.Appointment;
+using ASP.NET_Web_Application__.NET_Framework_.Models.ObserverPatternModels;
 
 namespace ASP.NET_Web_Application__.NET_Framework_.Data
 {
@@ -85,14 +87,28 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                 return newId;
             }
         }
-        // reading patients from the table 
+   
         public List<Patient> GetAllPatients()
         {
             var patients = new List<Patient>();
 
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
-                string query = "SELECT * FROM Patients"; // Ensure table name matches
+                string query = @"
+            SELECT 
+                p.PatientId,
+                p.Name,
+                p.Email,
+                p.PhoneNumber,
+                p.EmailNotificationEnabled,
+                p.SmsNotificationEnabled,
+                p.PushNotificationEnabled,
+                CASE 
+                    WHEN EXISTS (SELECT 1 FROM Appointment a WHERE a.PatientId = p.PatientId) THEN 'Yes'
+                    ELSE 'No'
+                END AS HasAppointment
+            FROM Patients p";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -105,13 +121,15 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                         PhoneNumber = reader["PhoneNumber"].ToString(),
                         EmailNotificationEnabled = Convert.ToBoolean(reader["EmailNotificationEnabled"]),
                         SmsNotificationEnabled = Convert.ToBoolean(reader["SmsNotificationEnabled"]),
-                        PushNotificationEnabled = Convert.ToBoolean(reader["PushNotificationEnabled"])
+                        PushNotificationEnabled = Convert.ToBoolean(reader["PushNotificationEnabled"]),
+                        HasAppointment = reader["HasAppointment"].ToString()
                     });
                 }
             }
 
             return patients;
         }
+
         // managing the patients subscriptions using update and delete 
         public void UpdatePatientSubscription(string email, bool emailSub, bool smsSub, bool pushSub)
         {
@@ -169,6 +187,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             }
       }
 
+   
     }
 }
  
