@@ -11,7 +11,7 @@ using System.Data.SqlTypes;
 
 namespace ASP.NET_Web_Application__.NET_Framework_.Data
 {
-    public class AppointmentDAL
+    public sealed class AppointmentDAL
     {
         private static AppointmentDAL _instance;
         private static readonly object _lock = new object();
