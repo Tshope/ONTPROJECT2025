@@ -28,7 +28,7 @@
                 <asp:Calendar ID="calendar" runat="server" CssClass="calendar" BackColor="White" BorderColor="#999999"
                     CellPadding="4" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt"
                     ForeColor="Black" Height="180px" Width="100%" 
-                    OnDayRender="calendar_DayRender">
+                    OnDayRender="Calendar_DayRender">
                     <DayHeaderStyle BackColor="#CCCCCC" Font-Bold="True" Font-Size="7pt" />
                     <NextPrevStyle VerticalAlign="Bottom" />
                     <OtherMonthDayStyle ForeColor="#808080" />

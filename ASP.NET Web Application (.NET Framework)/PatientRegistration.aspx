@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PatientRegistration.aspx.cs" Inherits="ASP.NET_Web_Application__.NET_Framework_.PatientRegistration" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"  Async="true" CodeBehind="PatientRegistration.aspx.cs" Inherits="ASP.NET_Web_Application__.NET_Framework_.PatientRegistration" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <main aria-labelledby="title">
@@ -72,9 +72,36 @@
                     <asp:CheckBoxField DataField="EmailNotificationEnabled" HeaderText="Email Sub" />
                     <asp:CheckBoxField DataField="SmsNotificationEnabled" HeaderText="SMS Sub" />
                     <asp:CheckBoxField DataField="PushNotificationEnabled" HeaderText="Push Sub" />
-                    <asp:CommandField ShowEditButton="True" ShowDeleteButton="True" />
+                     <asp:BoundField DataField="HasAppointment" HeaderText="Has Appointment?" ReadOnly="True" />    
+                    <asp:CommandField ShowEditButton="True" ShowDeleteButton="True"  HeaderText="Manage" />         
+                                                                                   
                 </Columns>
             </asp:GridView>
         </div>
-    </main>
-</asp:Content>
+    </main> 
+ <script type="text/javascript">
+     function autoHideMessages() {
+         // Hide success message after 2 seconds if visible
+         var successPanel = document.getElementById('<%= pnlSuccess.ClientID %>');
+        if (successPanel && successPanel.style.display !== 'none') {
+            setTimeout(function () {
+                successPanel.style.display = 'none';
+            }, 2000);
+        }
+
+        // Hide error message after 2 seconds if visible
+        var errorPanel = document.getElementById('<%= pnlError.ClientID %>');
+         if (errorPanel && errorPanel.style.display !== 'none') {
+             setTimeout(function () {
+                 errorPanel.style.display = 'none';
+             }, 2000);
+         }
+     }
+
+     // Run on page load and after every postback
+     window.onload = autoHideMessages;
+     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(autoHideMessages);
+ </script>
+</asp:Content> 
+
+

@@ -11,7 +11,7 @@ using System.Data.SqlTypes;
 
 namespace ASP.NET_Web_Application__.NET_Framework_.Data
 {
-    public class AppointmentDAL
+    public sealed class AppointmentDAL
     {
         private static AppointmentDAL _instance;
         private static readonly object _lock = new object();
@@ -103,12 +103,12 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             using (var connection = new SqlConnection(connectionString))
             {
                 using (var command = new SqlCommand(@"
-    SELECT a.AppointmentId, p.Name AS PatientName, a.Doctor, 
-           a.AppointmentDate, a.Reason
-    FROM Appointment a
-    JOIN Patients p ON a.PatientId = p.PatientId
-    WHERE a.AppointmentDate >= @Today
-    ORDER BY a.AppointmentDate ASC", connection))
+                    SELECT a.AppointmentId, p.Name AS PatientName, a.Doctor, 
+                           a.AppointmentDate, a.Reason
+                    FROM Appointment a
+                    JOIN Patients p ON a.PatientId = p.PatientId
+                    WHERE a.AppointmentDate >= @Today
+                    ORDER BY a.AppointmentDate ASC", connection))
 
                 {
                     command.Parameters.AddWithValue("@Today", DateTime.Today);

@@ -10,10 +10,12 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.ObserverPatternModels
     {
         private readonly string _phoneNumber;
         private readonly NotificationDataAccess _dataAccess;
+        private readonly int _patientId;
 
-        public SmsObserver(string phoneNumber)
+        public SmsObserver(string phoneNumber, int patientId)
         {
             _phoneNumber = phoneNumber;
+            _patientId = patientId;
             _dataAccess = new NotificationDataAccess();
         }
 
@@ -25,7 +27,8 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.ObserverPatternModels
                 {
                     Recipient = _phoneNumber,
                     NotificationType = "SMS",
-                    Message = message
+                    Message = message,
+                    PatientId = _patientId // Correctly using passed-in PatientId
                 };
 
                 _dataAccess.SaveNotificationLog(notificationLog);

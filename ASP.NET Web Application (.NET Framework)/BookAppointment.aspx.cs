@@ -23,14 +23,13 @@ namespace ASP.NET_Web_Application__.NET_Framework_
                 PopulateDoctors();
 
                 // Set calendar to not allow past dates
-                calendar.DayRender += calendar_DayRender;
+                calendar.DayRender += Calendar_DayRender;
 
                 // Set default date to tomorrow
                 calendar.SelectedDate = DateTime.Today.AddDays(1);
 
                 // Clear any previous messages
-                pnlSuccess.Visible = false;
-                pnlError.Visible = false;
+                ClearMessages();
 
                 // Load patients from DAL
                 ddlPatient.DataSource = AppointmentDAL.GetInstance().GetCustomersWithoutAppointments();
@@ -59,7 +58,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             ddlDoctor.Items.Add(new ListItem("Dr. Taylor", "Taylor"));
         }
 
-        protected void calendar_DayRender(object sender, DayRenderEventArgs e)
+        protected void Calendar_DayRender(object sender, DayRenderEventArgs e)
         {
             DateTime today = DateTime.Today;
 
@@ -178,7 +177,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_
 
                     // Save appointment to database
                     bool success = AppointmentDAL.GetInstance().AddAppointment(appointment);
-
+                    // Show success message
                     if (success)
                     {
                         // Show success message
@@ -211,6 +210,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_
         protected void BtnClear_Click(object sender, EventArgs e)
         {
             ClearForm();
+            ClearMessages();
         }
 
         private void ClearForm()
@@ -229,24 +229,43 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             // Reset checkboxes
             chkNotify24h.Checked = true;
             chkNotify1h.Checked = false;
+        }
 
-            // Clear messages
+        private void ClearMessages()
+        {
+            // Clear message panels
+            litSuccess.Text = string.Empty;
+            litError.Text = string.Empty;
             pnlSuccess.Visible = false;
             pnlError.Visible = false;
         }
 
         private void ShowSuccessMessage(string message)
         {
+            if (string.IsNullOrEmpty(message))
+                return;
+
             litSuccess.Text = message;
             pnlSuccess.Visible = true;
             pnlError.Visible = false;
+
+            // Ensure the success panel is visible when the page loads
+            ScriptManager.RegisterStartupScript(this, GetType(), "ShowSuccessPanel",
+                "window.onload = function() { document.getElementById('" + pnlSuccess.ClientID + "').scrollIntoView(true); };", true);
         }
 
         private void ShowErrorMessage(string message)
         {
+            if (string.IsNullOrEmpty(message))
+                return;
+
             litError.Text = message;
             pnlError.Visible = true;
             pnlSuccess.Visible = false;
+
+            // Ensure the error panel is visible when the page loads
+            ScriptManager.RegisterStartupScript(this, GetType(), "ShowErrorPanel",
+                "window.onload = function() { document.getElementById('" + pnlError.ClientID + "').scrollIntoView(true); };", true);
         }
 
         private void LoadUpcomingAppointments()
