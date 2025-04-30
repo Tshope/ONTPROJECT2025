@@ -23,11 +23,16 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public NotificationLog()
-        {
-            CreatedAt = DateTime.UtcNow;
-        }
+        public string Status { get; set; }
+
+        public int? AppointmentId { get; set; }
 
         public int? PatientId { get; set; }
+
+        public NotificationLog()
+        {
+            Status = "Created";
+            CreatedAt = DateTime.UtcNow;
+        }
     }
 }

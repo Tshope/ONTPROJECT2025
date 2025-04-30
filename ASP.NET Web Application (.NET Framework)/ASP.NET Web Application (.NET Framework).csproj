@@ -231,6 +231,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\default.css" />
     <Content Include="Content\Images\img1.svg" />
+    <Content Include="Content\SendingNotification.css" />
     <Content Include="Content\PatientRegistration.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style.css" />
@@ -294,6 +295,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="SendNotifications.aspx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -340,6 +342,11 @@
     <Compile Include="Models\Appointment\Appointment.cs" />
     <Compile Include="Models\Appointment\AppointmentViewModel.cs" />
     <Compile Include="Models\NotificationLog.cs" />
+    <Compile Include="Models\Notifications\EmailNotification.cs" />
+    <Compile Include="Models\Notifications\INotification.cs" />
+    <Compile Include="Models\Notifications\NotificationFactory.cs" />
+    <Compile Include="Models\Notifications\PushNotification.cs" />
+    <Compile Include="Models\Notifications\SmsNotification.cs" />
     <Compile Include="Models\ObserverPatternModels\EmailObserver.cs" />
     <Compile Include="Models\ObserverPatternModels\IObserver.cs" />
     <Compile Include="Models\ObserverPatternModels\ISubject.cs" />
@@ -360,6 +367,13 @@
       <DependentUpon>PatientRegistration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SendNotifications.aspx.cs">
+      <DependentUpon>SendNotifications.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SendNotifications.aspx.designer.cs">
+      <DependentUpon>SendNotifications.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

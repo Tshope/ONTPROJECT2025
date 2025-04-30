@@ -45,7 +45,7 @@
                <a class="tab-btn" runat="server" href="~/PatientRegistration.aspx">Patient Registration</a>
 
                 <a class="tab-btn" runat="server" href="~/BookAppointment.aspx">Appointment Creation</a>
-                <a class="tab-btn" >Send Notifications</a>
+                <a class="tab-btn" runat="server" href="~/SendNotifications.aspx">Send Notifications</a>
                 <a class="tab-btn" >Delivery Dashboard</a>
             </nav>
         </div>
