@@ -309,7 +309,7 @@
             <h1>Never Miss a Healthcare Appointment Again</h1>
             <p>Automated SMS, Email & App Notifications that reduce no-shows by up to 30% and improve patient satisfaction.</p>
             <div class="hero-btns">
-                <a href="#" class="btn">Register Patient</a>
+                <a href="PatientLogin.aspx" class="btn">Patient Login</a>
                 <a href="#" class="btn btn-outline">Learn More</a>
             </div>
             <!-- With additional attributes for better performance -->
