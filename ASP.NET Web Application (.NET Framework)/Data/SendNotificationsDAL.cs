@@ -25,27 +25,22 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
         {
             List<NotificationWithAppointmentViewModel> notifications = new List<NotificationWithAppointmentViewModel>();
 
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 string query = @"
-                            SELECT 
-                                p.Name AS PatientName,
-                                STRING_AGG(n.NotificationType, ', ') AS NotificationTypes,
-                                MAX(a.Reason) AS Reason,
-                                MAX(a.Doctor) AS Doctor,
-                                MAX(n.Status) AS Status,
-                                MAX(n.CreatedAt) AS CreatedAt,
-                                MAX(a.AppointmentDate) AS AppointmentDate
-                            FROM NotificationLogs n
-                            INNER JOIN Patients p ON n.PatientId = p.PatientId
-                            INNER JOIN Appointment a ON p.PatientId = a.PatientId -- Only include those with appointments
-                            GROUP BY p.PatientId, p.Name
-                            ORDER BY MAX(n.CreatedAt) DESC;";
-
-
-
+                    SELECT 
+                        p.Name AS PatientName,
+                        STRING_AGG(n.NotificationType, ', ') AS NotificationTypes,
+                        MAX(a.Reason) AS Reason,
+                        MAX(a.Doctor) AS Doctor,
+                        MAX(n.Status) AS Status,
+                        MAX(n.CreatedAt) AS CreatedAt,
+                        MAX(a.AppointmentDate) AS AppointmentDate
+                    FROM NotificationLogs n
+                    INNER JOIN Patients p ON n.PatientId = p.PatientId
+                    INNER JOIN Appointment a ON p.PatientId = a.PatientId
+                    GROUP BY p.PatientId, p.Name
+                    ORDER BY MAX(n.CreatedAt) DESC;";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -56,7 +51,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                         {
                             DateTime appointmentDate = reader["AppointmentDate"] != DBNull.Value
                                 ? Convert.ToDateTime(reader["AppointmentDate"])
-                                : DateTime.MinValue; // Handle DBNull case
+                                : DateTime.MinValue;
 
                             notifications.Add(new NotificationWithAppointmentViewModel
                             {
@@ -66,8 +61,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                                 Doctor = reader["Doctor"].ToString(),
                                 Status = reader["Status"].ToString(),
                                 CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
-                                AppointmentDate = appointmentDate // No nullable DateTime
-
+                                AppointmentDate = appointmentDate
                             });
                         }
                     }
@@ -77,26 +71,21 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             return notifications;
         }
 
-
-
-
-
         public List<Appointment> GetAllAppointments()
         {
             List<Appointment> appointments = new List<Appointment>();
 
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"SELECT 
-                                a.AppointmentId, 
-                                a.AppointmentDate, 
-                                a.PatientId, 
-                                p.Name AS PatientName
-                            FROM Appointment a
-                            INNER JOIN Patients p ON a.PatientId = p.PatientId
-                            ORDER BY a.AppointmentDate DESC";
+                string query = @"
+                    SELECT 
+                        a.AppointmentId, 
+                        a.AppointmentDate, 
+                        a.PatientId, 
+                        p.Name AS PatientName
+                    FROM Appointment a
+                    INNER JOIN Patients p ON a.PatientId = p.PatientId
+                    ORDER BY a.AppointmentDate DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -112,8 +101,6 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                                 PatientId = Convert.ToInt32(reader["PatientId"]),
                                 PatientName = reader["PatientName"].ToString()
                             });
-
-
                         }
                     }
                 }
@@ -122,12 +109,11 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             return appointments;
         }
 
-
         public List<NotificationLog> GetPendingNotificationsByAppointmentId(int appointmentId)
         {
             List<NotificationLog> notifications = new List<NotificationLog>();
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 string query = @"
                     SELECT 
@@ -170,13 +156,11 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             return notifications;
         }
 
-        // Send notifications for a specific appointment and update their status
         public List<string> ProcessNotificationsForAppointment(int appointmentId)
         {
             List<string> results = new List<string>();
             List<NotificationLog> notifications = GetPendingNotificationsByAppointmentId(appointmentId);
 
-            // If there are no pending notifications for this appointment
             if (notifications.Count == 0)
             {
                 results.Add("No pending notifications found for this appointment.");
@@ -187,61 +171,48 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             {
                 try
                 {
-                    string result = string.Empty;
+                    string result;
+                    INotification notifier;
 
-
-                    // Check if recipient is an email or phone number
                     if (IsValidEmail(notification.Recipient))
                     {
-                        // Send Email
-                        INotification emailNotifier = new EmailNotification();
-                        result = emailNotifier.Send(notification.Recipient, notification.Message);
+                        notifier = new EmailNotification();
+                        result = notifier.Send(notification.Recipient, notification.Message);
                     }
                     else if (IsValidPhoneNumber(notification.Recipient))
                     {
-                        // Send SMS
-                        INotification smsNotifier = new SmsNotification();
-                        result = smsNotifier.Send(notification.Message, notification.Recipient);
+                        notifier = new SmsNotification();
+                        result = notifier.Send(notification.Message, notification.Recipient);
                     }
                     else
                     {
                         result = $"Invalid recipient format: {notification.Recipient}";
+                        UpdateNotificationStatus(notification.NotificationLogId, "Failed");
+                        results.Add(result);
+                        continue;
                     }
-
-                    // Log the result of sending the notification
-
-                    // Send the notification - ensure parameters are in the correct order
-                    result = notifier.Send(notification.Recipient, notification.Message);
 
                     results.Add($"{notification.NotificationType}: {result}");
 
-                    // Update notification status to Sent if valid
-                    if (result.Contains("sent"))
+                    if (result.ToLower().Contains("sent"))
                     {
                         UpdateNotificationStatus(notification.NotificationLogId, "Sent");
                     }
                     else
                     {
-                        // If failed, log the error message and update status to Failed
                         UpdateNotificationStatus(notification.NotificationLogId, "Failed");
                         results.Add($"Error: {result} for {notification.NotificationType}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Log exception and set notification status to Failed
                     results.Add($"Error processing {notification.NotificationType}: {ex.Message}");
-
-                    // Update status to Failed
-
                     UpdateNotificationStatus(notification.NotificationLogId, "Failed");
                 }
             }
 
             return results;
         }
-
-
 
         private bool IsValidEmail(string recipient)
         {
@@ -258,23 +229,18 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
 
         private bool IsValidPhoneNumber(string recipient)
         {
-            // Assuming phone numbers start with a '0' and are 10 digits long (modify this as per your requirement)
             return recipient.Length == 10 && recipient.StartsWith("0") && recipient.All(char.IsDigit);
         }
 
-
-        // Update notification status in the database
         private void UpdateNotificationStatus(int notificationLogId, string status)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = "UPDATE NotificationLogs SET Status = @Status";
+                string query = "UPDATE NotificationLogs SET Status = @Status WHERE NotificationLogId = @NotificationLogId";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Status", status);
-                    
                     cmd.Parameters.AddWithValue("@NotificationLogId", notificationLogId);
 
                     conn.Open();
@@ -283,4 +249,4 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             }
         }
     }
-    }
+}
