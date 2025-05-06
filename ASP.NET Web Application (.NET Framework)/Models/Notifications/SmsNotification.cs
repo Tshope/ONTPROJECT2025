@@ -42,22 +42,18 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
 
                 var payload = new
                 {
-<<<<<<< HEAD
+
                     messages = new[] {
-=======
->>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
+
+
                 new {
                     from = sender,
                     destinations = new[] { new { to = to } },
                     text = message
                 }
-            }
-<<<<<<< HEAD
+                  }
                 };
-=======
-            };
->>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
-
+            
                 var json = JsonConvert.SerializeObject(payload);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 

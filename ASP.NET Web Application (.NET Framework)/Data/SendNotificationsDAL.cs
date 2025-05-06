@@ -189,7 +189,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                 {
                     string result = string.Empty;
 
-<<<<<<< HEAD
+
                     // Check if recipient is an email or phone number
                     if (IsValidEmail(notification.Recipient))
                     {
@@ -209,10 +209,10 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                     }
 
                     // Log the result of sending the notification
-=======
+
                     // Send the notification - ensure parameters are in the correct order
-                    string result = notifier.Send(notification.Recipient, notification.Message);
->>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
+                    result = notifier.Send(notification.Recipient, notification.Message);
+
                     results.Add($"{notification.NotificationType}: {result}");
 
                     // Update notification status to Sent if valid
@@ -231,10 +231,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                 {
                     // Log exception and set notification status to Failed
                     results.Add($"Error processing {notification.NotificationType}: {ex.Message}");
-<<<<<<< HEAD
-=======
+
                     // Update status to Failed
->>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
+
                     UpdateNotificationStatus(notification.NotificationLogId, "Failed");
                 }
             }
@@ -243,7 +242,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
         }
 
 
-<<<<<<< HEAD
+
         private bool IsValidEmail(string recipient)
         {
             try
@@ -263,8 +262,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             return recipient.Length == 10 && recipient.StartsWith("0") && recipient.All(char.IsDigit);
         }
 
-=======
->>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
+
         // Update notification status in the database
         private void UpdateNotificationStatus(int notificationLogId, string status)
         {

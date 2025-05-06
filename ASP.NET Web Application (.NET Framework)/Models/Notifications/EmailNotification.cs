@@ -56,15 +56,14 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
                 return false;
             }
         }
-<<<<<<< HEAD
+
 
         private void LogError(string message, string recipient)
         {
             // Add your logging implementation here (e.g., log to a file or database)
             Console.WriteLine($"Error: {message}, Recipient: {recipient}");
         }
-=======
->>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
+
     }
 
 }
