@@ -53,9 +53,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_
             // Add doctors
             ddlDoctor.Items.Add(new ListItem("Dr. Smith", "Smith"));
             ddlDoctor.Items.Add(new ListItem("Dr. Jones", "Jones"));
-            ddlDoctor.Items.Add(new ListItem("Dr. Adams", "Adams"));
-            ddlDoctor.Items.Add(new ListItem("Dr. Wilson", "Wilson"));
-            ddlDoctor.Items.Add(new ListItem("Dr. Taylor", "Taylor"));
+           
         }
 
         protected void Calendar_DayRender(object sender, DayRenderEventArgs e)

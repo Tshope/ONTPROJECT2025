@@ -30,5 +30,10 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Appointment
         public bool Notify1h { get; set; }
 
         public Patient Patient { get; set; }  // navigation-like property for joined data
+
+        public string PatientName { get; set; } // from Patients table
+
+        public string AppointmentDescription =>
+            $"appt for {PatientName} {AppointmentDate:yyyy-MM-dd HH:mm}";
     }
 }

@@ -340,6 +340,7 @@
     </Compile>
     <Compile Include="Data\AppointmentDAL.cs" />
     <Compile Include="Data\NotificationDataAccess.cs" />
+    <Compile Include="Data\SendNotificationsDAL.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -358,6 +359,7 @@
     <Compile Include="Models\Notifications\NotificationFactory.cs" />
     <Compile Include="Models\Notifications\PushNotification.cs" />
     <Compile Include="Models\Notifications\SmsNotification.cs" />
+    <Compile Include="Models\NotificationWithAppointmentViewModel.cs" />
     <Compile Include="Models\ObserverPatternModels\EmailObserver.cs" />
     <Compile Include="Models\ObserverPatternModels\IObserver.cs" />
     <Compile Include="Models\ObserverPatternModels\ISubject.cs" />

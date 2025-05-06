@@ -22,7 +22,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } = "pending";
 
         public int? AppointmentId { get; set; }
 

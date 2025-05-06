@@ -50,9 +50,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
             var responseContent = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
-                return $"✅ SMS sent to {to}";
+                return $"SMS sent to {to}";
             else
-                return $"❌ Failed: {responseContent}";
+                return $"Failed: {responseContent}";
         }
     }
 }

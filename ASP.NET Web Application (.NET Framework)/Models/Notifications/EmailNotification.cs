@@ -11,6 +11,9 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
         {
             try
             {
+                if (!IsValidEmail(recipient))
+                    return "Failed to send email: Invalid email format.";
+
                 var smtpUser = ConfigurationManager.AppSettings["SmtpUser"];
                 var smtpPassword = ConfigurationManager.AppSettings["SmtpPassword"];
                 var smtpServer = ConfigurationManager.AppSettings["SmtpServer"];
@@ -18,13 +21,15 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
 
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(smtpUser);
-                mail.To.Add(recipient);
+                mail.To.Add(new MailAddress(recipient));
                 mail.Subject = "Healthcare Appointment Reminder";
                 mail.Body = message;
 
-                SmtpClient smtp = new SmtpClient(smtpServer, smtpPort);
-                smtp.Credentials = new NetworkCredential(smtpUser, smtpPassword);
-                smtp.EnableSsl = true;
+                SmtpClient smtp = new SmtpClient(smtpServer, smtpPort)
+                {
+                    Credentials = new NetworkCredential(smtpUser, smtpPassword),
+                    EnableSsl = true
+                };
 
                 smtp.Send(mail);
 
@@ -35,5 +40,19 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
                 return $"Failed to send email: {ex.Message}";
             }
         }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }
