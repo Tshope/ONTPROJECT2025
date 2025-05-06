@@ -999,9 +999,6 @@ C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framewor
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.IdentityModel.Tokens.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.ScriptManager.MSAjax.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.ScriptManager.WebForms.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.TeamFoundation.Common.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.VisualStudio.Services.Common.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.VisualStudio.Services.WebApi.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Newtonsoft.Json.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Buffers.dll
@@ -1011,7 +1008,6 @@ C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framewor
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.IO.FileSystem.AccessControl.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Memory.Data.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Memory.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Net.Http.Formatting.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Numerics.Vectors.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Security.AccessControl.dll
@@ -1042,9 +1038,6 @@ C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framewor
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.IdentityModel.Protocols.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.IdentityModel.Tokens.xml
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.TeamFoundation.Common.xml
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.VisualStudio.Services.Common.xml
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.VisualStudio.Services.WebApi.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Buffers.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.ClientModel.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Diagnostics.DiagnosticSource.xml
@@ -1052,7 +1045,6 @@ C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framewor
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.IO.FileSystem.AccessControl.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Memory.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Memory.Data.xml
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Net.Http.Formatting.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Numerics.Vectors.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\System.Security.AccessControl.xml
@@ -1068,45 +1060,6 @@ C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framewor
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Antlr3.Runtime.pdb
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.AspNet.FriendlyUrls.xml
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\cs\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\de\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\es\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\fr\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\it\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ja\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ko\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\pl\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\pt-BR\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ru\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\tr\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\zh-Hans\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\zh-Hant\Microsoft.TeamFoundation.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\cs\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\de\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\es\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\fr\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\it\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ja\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ko\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\pl\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\pt-BR\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ru\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\tr\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\zh-Hans\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\zh-Hant\Microsoft.VisualStudio.Services.Common.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\cs\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\de\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\es\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\fr\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\it\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ja\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ko\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\pl\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\pt-BR\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\ru\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\tr\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\zh-Hans\Microsoft.VisualStudio.Services.WebApi.resources.dll
-C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\bin\zh-Hant\Microsoft.VisualStudio.Services.WebApi.resources.dll
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\obj\Debug\ASP.NET Web Application (.NET Framework).csproj.AssemblyReference.cache
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\obj\Debug\ASP.NET Web Application (.NET Framework).csproj.CoreCompileInputs.cache
 C:\Users\evide\Downloads\ONT2025_BESTTECH\ASP.NET Web Application (.NET Framework)\obj\Debug\ASP.NET .8B1A710C.Up2Date

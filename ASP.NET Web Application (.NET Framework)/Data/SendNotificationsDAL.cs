@@ -189,8 +189,8 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                     // Create the appropriate notification sender using factory pattern
                     INotification notifier = NotificationFactory.CreateNotification(notification.NotificationType);
 
-                    // Send the notification
-                    string result = notifier.Send(notification.Message, notification.Recipient);
+                    // Send the notification - ensure parameters are in the correct order
+                    string result = notifier.Send(notification.Recipient, notification.Message);
                     results.Add($"{notification.NotificationType}: {result}");
 
                     // Update notification status to Sent
@@ -200,12 +200,13 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
                 {
                     results.Add($"Error processing {notification.NotificationType}: {ex.Message}");
                     // Update status to Failed
-                    UpdateNotificationStatus(notification.NotificationLogId, "Pending");
+                    UpdateNotificationStatus(notification.NotificationLogId, "Failed");
                 }
             }
 
             return results;
         }
+
 
         // Update notification status in the database
         private void UpdateNotificationStatus(int notificationLogId, string status)
