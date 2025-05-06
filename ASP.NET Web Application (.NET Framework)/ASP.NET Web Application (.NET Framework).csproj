@@ -250,6 +250,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="PatientDashboard.aspx" />
+    <Content Include="PatientLogin.aspx" />
     <Content Include="PatientRegistration.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -373,6 +375,20 @@
     <Compile Include="Models\StrategyPatternModel\NotificationClient.cs" />
     <Compile Include="Models\StrategyPatternModel\PushNotificationStrategy.cs" />
     <Compile Include="Models\StrategyPatternModel\SmsNotificationStrategy.cs" />
+    <Compile Include="PatientDashboard.aspx.cs">
+      <DependentUpon>PatientDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PatientDashboard.aspx.designer.cs">
+      <DependentUpon>PatientDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PatientLogin.aspx.cs">
+      <DependentUpon>PatientLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PatientLogin.aspx.designer.cs">
+      <DependentUpon>PatientLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="PatientRegistration.aspx.cs">
       <DependentUpon>PatientRegistration.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
