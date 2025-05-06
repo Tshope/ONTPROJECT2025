@@ -12,7 +12,10 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
             try
             {
                 if (!IsValidEmail(recipient))
+                {
+                    LogError("Invalid email format", recipient);  // Log error
                     return "Failed to send email: Invalid email format.";
+                }
 
                 var smtpUser = ConfigurationManager.AppSettings["SmtpUser"];
                 var smtpPassword = ConfigurationManager.AppSettings["SmtpPassword"];
@@ -32,11 +35,11 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
                 };
 
                 smtp.Send(mail);
-
                 return $"Email sent to {recipient}";
             }
             catch (Exception ex)
             {
+                LogError(ex.Message, recipient);  // Log exception details
                 return $"Failed to send email: {ex.Message}";
             }
         }
@@ -54,5 +57,12 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
             }
         }
 
+        private void LogError(string message, string recipient)
+        {
+            // Add your logging implementation here (e.g., log to a file or database)
+            Console.WriteLine($"Error: {message}, Recipient: {recipient}");
+        }
     }
+
 }
+

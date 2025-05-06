@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 
 namespace ASP.NET_Web_Application__.NET_Framework_.Data
@@ -186,25 +187,70 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             {
                 try
                 {
-                    // Create the appropriate notification sender using factory pattern
-                    INotification notifier = NotificationFactory.CreateNotification(notification.NotificationType);
+                    string result = string.Empty;
 
-                    // Send the notification
-                    string result = notifier.Send(notification.Message, notification.Recipient);
+                    // Check if recipient is an email or phone number
+                    if (IsValidEmail(notification.Recipient))
+                    {
+                        // Send Email
+                        INotification emailNotifier = new EmailNotification();
+                        result = emailNotifier.Send(notification.Recipient, notification.Message);
+                    }
+                    else if (IsValidPhoneNumber(notification.Recipient))
+                    {
+                        // Send SMS
+                        INotification smsNotifier = new SmsNotification();
+                        result = smsNotifier.Send(notification.Message, notification.Recipient);
+                    }
+                    else
+                    {
+                        result = $"Invalid recipient format: {notification.Recipient}";
+                    }
+
+                    // Log the result of sending the notification
                     results.Add($"{notification.NotificationType}: {result}");
 
-                    // Update notification status to Sent
-                    UpdateNotificationStatus(notification.NotificationLogId, "Sent");
+                    // Update notification status to Sent if valid
+                    if (result.Contains("sent"))
+                    {
+                        UpdateNotificationStatus(notification.NotificationLogId, "Sent");
+                    }
+                    else
+                    {
+                        // If failed, log the error message and update status to Failed
+                        UpdateNotificationStatus(notification.NotificationLogId, "Failed");
+                        results.Add($"Error: {result} for {notification.NotificationType}");
+                    }
                 }
                 catch (Exception ex)
                 {
+                    // Log exception and set notification status to Failed
                     results.Add($"Error processing {notification.NotificationType}: {ex.Message}");
-                    // Update status to Failed
-                    UpdateNotificationStatus(notification.NotificationLogId, "Pending");
+                    UpdateNotificationStatus(notification.NotificationLogId, "Failed");
                 }
             }
 
             return results;
+        }
+
+
+        private bool IsValidEmail(string recipient)
+        {
+            try
+            {
+                var addr = new MailAddress(recipient);
+                return addr.Address == recipient;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+        private bool IsValidPhoneNumber(string recipient)
+        {
+            // Assuming phone numbers start with a '0' and are 10 digits long (modify this as per your requirement)
+            return recipient.Length == 10 && recipient.StartsWith("0") && recipient.All(char.IsDigit);
         }
 
         // Update notification status in the database

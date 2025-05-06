@@ -22,37 +22,54 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
 
         private async Task<string> SendSmsAsync(string message, string to)
         {
-            var apiKey = ConfigurationManager.AppSettings["InfobipApiKey"];
-            var baseUrl = ConfigurationManager.AppSettings["InfobipBaseUrl"];
-            var sender = ConfigurationManager.AppSettings["InfobipSender"];
-
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("App", apiKey);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var payload = new
+            try
             {
-                messages = new[]
+                var apiKey = ConfigurationManager.AppSettings["InfobipApiKey"];
+                var baseUrl = ConfigurationManager.AppSettings["InfobipBaseUrl"];
+                var sender = ConfigurationManager.AppSettings["InfobipSender"];
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("App", apiKey);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var payload = new
                 {
-                    new {
-                        from = sender,
-                        destinations = new[] { new { to = to } },
-                        text = message
-                    }
+                    messages = new[] {
+                new {
+                    from = sender,
+                    destinations = new[] { new { to = to } },
+                    text = message
                 }
-            };
+            }
+                };
 
-            var json = JsonConvert.SerializeObject(payload);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var json = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("/sms/2/text/advanced", content);
-            var responseContent = await response.Content.ReadAsStringAsync();
+                var response = await client.PostAsync("/sms/2/text/advanced", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-                return $"SMS sent to {to}";
-            else
-                return $"Failed: {responseContent}";
+                if (response.IsSuccessStatusCode)
+                    return $"SMS sent to {to}";
+                else
+                {
+                    LogError("SMS API error: " + responseContent, to);  // Log error
+                    return $"Failed: {responseContent}";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message, to);  // Log exception details
+                return $"Failed to send SMS: {ex.Message}";
+            }
         }
+
+        private void LogError(string message, string recipient)
+        {
+            // Add your logging implementation here (e.g., log to a file or database)
+            Console.WriteLine($"Error: {message}, Recipient: {recipient}");
+        }
+
     }
 }
