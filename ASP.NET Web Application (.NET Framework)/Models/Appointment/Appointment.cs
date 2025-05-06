@@ -28,5 +28,7 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Appointment
 
         public bool Notify24h { get; set; }
         public bool Notify1h { get; set; }
+
+        public Patient Patient { get; set; }  // navigation-like property for joined data
     }
 }

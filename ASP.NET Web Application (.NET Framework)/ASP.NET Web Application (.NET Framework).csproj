@@ -371,7 +371,12 @@
     <Compile Include="Models\StrategyPatternModel\ConcreteStrategyBaseBatchDelivery.cs" />
     <Compile Include="Models\StrategyPatternModel\ConcreteStrategyBaseScheduledDelivery.cs" />
     <Compile Include="Models\StrategyPatternModel\ConcreteStrategyBaseImmediateDelivery.cs" />
+    <Compile Include="Models\StrategyPatternModel\EmailNotificationStrategy.cs" />
+    <Compile Include="Models\StrategyPatternModel\INotificationStrategy.cs" />
+    <Compile Include="Models\StrategyPatternModel\NotificationClient.cs" />
     <Compile Include="Models\StrategyPatternModel\NotificationStrategy.cs" />
+    <Compile Include="Models\StrategyPatternModel\PushNotificationStrategy.cs" />
+    <Compile Include="Models\StrategyPatternModel\SmsNotificationStrategy.cs" />
     <Compile Include="Models\StrategyPatternModel\StrategyBase.cs" />
     <Compile Include="PatientRegistration.aspx.cs">
       <DependentUpon>PatientRegistration.aspx</DependentUpon>
