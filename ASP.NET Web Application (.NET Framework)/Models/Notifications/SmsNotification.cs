@@ -10,17 +10,24 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
 {
     public class SmsNotification : INotification
     {
-        public string Send(string message, string recipient)
+        public string Send(string recipient, string message)
         {
-            // Convert to international format (e.g. 27821234567)
-            if (recipient.StartsWith("0"))
-                recipient = "27" + recipient.Substring(1);
+            try
+            {
+                // Convert to international format (e.g. 27821234567)
+                if (recipient.StartsWith("0"))
+                    recipient = "27" + recipient.Substring(1);
 
-            var result = SendSmsAsync(message, recipient).Result;
-            return result;
+                var result = SendSmsAsync(recipient, message).Result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return $"Error processing SMS: {ex.Message}";
+            }
         }
 
-        private async Task<string> SendSmsAsync(string message, string to)
+        private async Task<string> SendSmsAsync(string to, string message)
         {
             try
             {
@@ -35,14 +42,21 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Models.Notifications
 
                 var payload = new
                 {
+<<<<<<< HEAD
                     messages = new[] {
+=======
+>>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
                 new {
                     from = sender,
                     destinations = new[] { new { to = to } },
                     text = message
                 }
             }
+<<<<<<< HEAD
                 };
+=======
+            };
+>>>>>>> e686e17639e2233c6b4344fb37643f262cc39eab
 
                 var json = JsonConvert.SerializeObject(payload);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");

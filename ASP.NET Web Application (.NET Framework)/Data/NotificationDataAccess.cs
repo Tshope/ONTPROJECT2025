@@ -187,7 +187,31 @@ namespace ASP.NET_Web_Application__.NET_Framework_.Data
             }
       }
 
-   
+        //  checking is the email exists in the database for patient login
+        public bool ValidatePatientEmail(string email)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM Patients WHERE Email = @Email";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        int count = (int)cmd.ExecuteScalar();
+                        return count > 0;
+                    }
+                }
+                catch (Exception)
+                {
+                    throw; // Let the calling method handle the exception
+                }
+            }
+        }
     }
+
+
 }
+
  
